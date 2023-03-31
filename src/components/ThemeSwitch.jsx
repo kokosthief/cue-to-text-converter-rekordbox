@@ -4,13 +4,13 @@ export default function ThemeSwitch() {
   const [darkToggle, setDarkToggle] = React.useState(false)
   return (
     <div
-      class={`   py-auto absolute right-2.5 ${
+      className={`   py-auto absolute right-2.5 ${
         darkToggle && 'dark'
       }`}
     >
-      <label class="toggleDarkBtn">
+      <label className="toggleDarkBtn">
         <input type="checkbox" onClick={() => setDarkToggle(!darkToggle)} />
-        <span class="slideBtnTg round"></span>
+        <span className="slideBtnTg round"></span>
       </label>
     </div>
   )
