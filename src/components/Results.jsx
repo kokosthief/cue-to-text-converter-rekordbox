@@ -1,53 +1,74 @@
 import Papa from "papaparse";
-import { useState } from "react";
 
 export default function Results() {
-  const [parsedData, setParsedData] = useState([]);
-
-  //State to store table Column name
-  const [tableRows, setTableRows] = useState([]);
-
-  //State to store the values
-  const [values, setValues] = useState([]);
-
   const changeHandler = (event) => {
+    let songs = [];
+
+    // 0: Parse original JSON in an object (event.target.files[0]) using Papa.parse
     Papa.parse(event.target.files[0], {
-      header: true,
-      skipEmptyLines: true,
+      header: false,
+      skipEmptyLines: false,
       complete: function (results) {
-        const rowsArray = [];
-        const valuesArray = [];
+        
+        // 1: Store results.data in a variable whilst removing first 5 rows.
+        let parsedData = results.data.slice(5);
+        console.log(parsedData)
 
-        // Iterating data to get column name and their values
-        results.data.map((d) => {
-          rowsArray.push(Object.keys(d));
-          valuesArray.push(Object.values(d));
-        });
+        // 2: Rename key for each array to make it cleaner
 
-        // Parsed Data Response in array format
-        setParsedData(results.data);
+        // 3. Using for loop - Remove 3rd and 5th row every five rows
 
-        // Filtered Column Names
-        setTableRows(rowsArray[0]);
+        // 4. Create map of data with 3 properties: time, songTitle, artist
 
-        // Filtered Values
-        setValues(valuesArray);
+        // 5. Using for loop push time, song name and artist each into one const
+
+        // 6. Print the results in container
+        
+        // console.log(dirtyArray[3]['REM DATE 2023-02-19 10:58 AM'])
+        // console.log(dirtyArray[0]['REM DATE 2023-02-19 10:58 AM'])
+        // console.log(dirtyArray[1]['REM DATE 2023-02-19 10:58 AM'])
       },
     });
   };
 
+  // Step 1: remove 3rd and 5th lines of an array.
+
+  // Step 1: replace keys with song time code, title, artist
+
   return (
     <div className="pt-14 pb-8 px-5 grid grid-cols-1 md:grid-cols-2 max-w-6xl mx-auto gap-10">
       <div className="border-2 rounded-lg	border-black hover:border-indigo-700">
-        <div className="m-8">
+        <div className="m-4">
           <h2 className="font-bold text-4xl text-black pt-4">
             Upload .CUE file
           </h2>
           <p className=" text-md text-neutral-600 pt-4 pb-">
             Original data displayed below:
           </p>
-          <div className="w-full h-80  mt-6 mb-6 bg-gray-100 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-            <p className="text-xs">RAW .CUE DATA</p>
+          <div className="text-center w-full h-80 mt-6 mb-6 bg-gray-200 border-dashed border-4 border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+            <label className="cursor-pointer">
+              <input
+                type="file"
+                name="file"
+                accept=".cue"
+                className="hidden"
+                onChange={changeHandler}
+              />
+              <svg
+                className="mt-14 mx-auto w-2/5 h-2/5"
+                fill="rgb(156 163 175"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
+                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+              </svg>
+              <p className=" text-3xl  text-gray-600 font-extrabold ">
+                Drag and drop or click here
+              </p>
+              <p className=" mt-3 text-1xl  text-gray-400 font-normal">
+                to upload your .csv file from Rekordbox
+              </p>
+            </label>
           </div>
         </div>
 
@@ -74,7 +95,7 @@ export default function Results() {
       </div>
 
       <div className="border-2 rounded-lg	border-black hover:border-indigo-700">
-        <div className="m-8">
+        <div className="m-4">
           <h2 className="font-bold text-4xl text-black pt-4">
             Copy to Clipboard
           </h2>
@@ -82,26 +103,8 @@ export default function Results() {
             Use online for Soundcloud etc.
           </p>
           <div className="w-full h-80  mt-6 mb-6 bg-gray-100 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-            <table>
-              <thead>
-                <tr>
-                  {tableRows.map((rows, index) => {
-                    return <th key={index}>{rows}</th>;
-                  })}
-                </tr>
-              </thead>
-              <tbody>
-                {values.map((value, index) => {
-                  return (
-                    <tr key={index}>
-                      {value.map((val, i) => {
-                        return <td key={i}>{val}</td>;
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+            <p id=""></p>
+            <p className="m-4 truncate overflow-scroll text-clip tracking-tight	leading-tight	"></p>
           </div>
         </div>
 
