@@ -1,47 +1,27 @@
 import Papa from "papaparse";
 import { useState } from "react";
-import DragDrop from "./DragDrop";
 
 export default function Results() {
   const [parsedData, setParsedData] = useState([]);
-  // console.log("PARSED DATA", parsedData);
 
-  const modifyParsedData = (xyz) => {
-    const conciseData = xyz.splice(5);
+  const modifyParsedData = (data) => {
+    const splitData = data.splice(5);
 
-    const modifiedArray = [];
-
-    for (let i = 0; i < conciseData.length; i += 5) {
-      modifiedArray.push(conciseData[i + 1]);
-      modifiedArray.push(conciseData[i + 2]);
-      modifiedArray.push(conciseData[i + 4]);
-    }
-    // console.log(modifiedArray);
-
-    const songTitles = [];
-
-    for (let i = 0; i < modifiedArray.length; i += 3) {
-      songTitles.push(modifiedArray[i]);
-
-      // let songTitles = modifiedArray[i].slice(2);
-
-      // let tempString = modifiedArray[i].substr(4);
-
-      // // remove the last ten characters using .slice()
-      // tempString = tempString.slice(0, -4);
-
-      // // update the array with the modified string
-      // songTitles[i] = tempString;
+    const filteredArray = [];
+    for (let i = 0; i < splitData.length; i += 5) {
+      filteredArray.push(splitData[i + 1]);
+      filteredArray.push(splitData[i + 2]);
+      filteredArray.push(splitData[i + 4]);
     }
 
-    // console.log(firstSong.substring(3, 0));
+    const filteredSet = new Set(); // create an empty map
 
-    // let sanitizedData = [];
-
-    // for (let i = 0; i < modifiedArray.length; 3) {
-    //   let sanitizedArray.song[i] = modifiedArray[i].slice(11);
-    // }
-    // console.log(sanitizedArray);
+    for (let i = 0; i < filteredArray.length; i += 3) {
+      filteredSet.add({ key: "time", value: filteredArray[i + 2] });
+      filteredSet.add({ key: "title", value: filteredArray[i] });
+      filteredSet.add({ key: "artist", value: filteredArray[i + 1] });
+    }
+    console.log(filteredSet);
   };
 
   modifyParsedData(parsedData);
@@ -68,7 +48,33 @@ export default function Results() {
             <p className=" text-md text-neutral-600 dark:text-[#ADADAD] pt-4 pb-">
               Original data displayed below:
             </p>
-            <DragDrop />
+            <div className="text-center w-full h-80 mt-6 mb-6 bg-gray-200 border-dashed hover:border-solid border-4 border-gray-300 rounded-lg hover:border-indigo-700">
+              <form>
+                <label className=" cursor-pointer">
+                  <input
+                    type="file"
+                    name="file"
+                    accept=".cue"
+                    className="hidden"
+                    onChange={changeHandler}
+                  />
+                  <svg
+                    className="mt-3 mx-auto w-2/5 h-2/5"
+                    fill="rgb(156 163 175"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+                  </svg>
+                  <p className=" text-3xl  text-gray-600 font-extrabold ">
+                    Drag and drop or click upload
+                  </p>
+                  <p className=" mt-3 text-1xl  text-gray-400 font-normal">
+                    to upload your .csv file from Rekordbox
+                  </p>
+                </label>
+              </form>
+            </div>
           </div>
 
           <div className="pt-2">
