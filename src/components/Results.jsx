@@ -35,7 +35,7 @@ export default function Results() {
 
   return (
     <div className="flex-auto">
-      <div className="pt-14 pb-8 px-5 grid grid-cols-1 md:grid-cols-2 max-w-6xl mx-auto gap-10">
+      <div className="pt-10 max-sm:pt-0 pb-8 px-5 grid grid-cols-1 md:grid-cols-2 max-w-6xl mx-auto gap-10">
         <div className="border-2 rounded-lg bg-[#fff1d6bb] dark:bg-[#1f155751]	border-black dark:border-[#027de1bd]">
           <div className="m-4 max-sm:hidden">
             <h2 className="font-bold text-4xl text-black dark:text-white pt-4">

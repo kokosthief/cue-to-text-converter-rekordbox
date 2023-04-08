@@ -22,7 +22,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="bg-black flex  justify-around items-center py-4 max-sm:px-6">
+    <div className="bg-black flex  justify-around items-center max-sm:py-1.5 py-4 max-sm:px-6">
       <div className="flex flex-wrap max-sm:px-12">
         <div className="my-auto m-auto ">
           <svg //rekordbox logo
