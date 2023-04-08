@@ -7,10 +7,11 @@ import Navbar from "./components/Navbar";
 
 function App() {
   return (
-    <div className="App  bg-gradient-to-r from-slate-500 to-yellow-100 dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-600  min-h-screen">
+    <div className="flex flex-col h-screen App  bg-gradient-to-r from-slate-500 to-yellow-100 dark:bg-gradient-to-b dark:from-gray-900 dark:to-gray-600  ">
       <Navbar />
       <Header />
       <Results />
+      <Footer />
     </div>
   );
 }

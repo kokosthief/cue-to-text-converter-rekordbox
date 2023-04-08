@@ -34,7 +34,7 @@ export default function Results() {
   // 3. in modifiedData remove everything outside of quotation marks
 
   return (
-    <div className="h-max min-h-max">
+    <div className="flex-auto">
       <div className="pt-14 pb-8 px-5 grid grid-cols-1 md:grid-cols-2 max-w-6xl mx-auto gap-10">
         <div className="border-2 rounded-lg bg-[#fff1d6bb] dark:bg-[#1f155751]	border-black dark:border-[#027de1bd]">
           <div className="m-4 max-sm:hidden">
@@ -44,7 +44,7 @@ export default function Results() {
             <p className="text-md text-neutral-600 dark:text-[#ADADAD] pt-4 pb-">
               Original data displayed below:
             </p>
-            <div className=" text-center w-full h-80 mt-6 mb-6 bg-gray-200 border-dashed hover:border-solid border-4 border-gray-300 rounded-lg hover:border-indigo-700">
+            <div className=" text-center w-full h-80 mt-6 mb-6 bg-gray-200 border-dashed hover:border-solid border-4 border-[#a5a4a4] rounded-lg hover:border-indigo-700">
               <form>
                 <label className=" cursor-pointer">
                   <input
@@ -103,7 +103,7 @@ export default function Results() {
             <p className=" text-md text-neutral-600 dark:text-[#ADADAD] pt-4 pb-">
               Use online for Soundcloud etc.
             </p>
-            <div className="w-full h-80 mt-6 mb-6 border-4 border-gray-300  bg-gray-100  text-gray-900 rounded-lg hover:border-indigo-700">
+            <div className="w-full h-80 mt-6 mb-6 border-4 border-[#a5a4a4a3]  bg-gray-100  text-gray-900 rounded-lg hover:border-indigo-700">
               <p id=""></p>
               <p className="m-4 truncate overflow-scroll text-clip tracking-tight	leading-tight	"></p>
             </div>
