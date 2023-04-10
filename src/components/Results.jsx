@@ -10,32 +10,60 @@ export default function Results() {
       header: false,
       skipEmptyLines: true,
       complete: function (results) {
-        setParsedData(results.data.splice(5));
+        setParsedData(results.data);
       },
     });
   };
 
-  // loop over the data and create an object with the track title, performer and time
   const modifyData = (data) => {
-    let result = new Object();
-    for (let i = 1; i < data.length; i += 5) {
-      result.time = data[i + 3];
-      result.song = data[i + 0];
-      result.artist = data[i + 1];
-    }
-    console.log(result);
-  };
-  modifyData(parsedData);
+    const splicedArr = data.splice(5);
 
+    const result = {};
+    for (let i = 0; i < splicedArr.length; i += 5) {
+      if (!result[i]) {
+        result[i] = {
+          title: splicedArr[i + 1],
+          artist: splicedArr[i + 2],
+          time: splicedArr[i + 4],
+        };
+      }
+    }
+    return result;
+  };
+
+  const sanitizeData = (data) => {
+    const sanitizedData = {};
+    for (const key in data) {
+      sanitizedData[key] = {};
+      for (const innerKey in data[key]) {
+        if (data !== undefined) {
+          sanitizedData[key][innerKey] = data[key][innerKey].map(
+            (str) =>
+              str
+                .replace(/^\s+/, "") // Remove leading white space
+                .replace(/\t/g, "") // Remove tabs
+                .replace(/INDEX 01 /, "") // Remove "INDEX 01 " string
+                .replace(/TITLE /, "") // Remove "TITLE " string
+                .replace(/PERFORMER /, "") // Remove "PERFORMER " string
+                .replace(/"/g, "") // Remove quotes
+          );
+        }
+      }
+    }
+    console.log(sanitizedData);
+    return sanitizedData;
+  };
+
+  sanitizeData(modifyData(parsedData));
   return (
     <div className="flex-auto">
       <div className="pt-10 max-sm:pt-0 pb-8 px-5 grid grid-cols-1 md:grid-cols-2 max-w-6xl mx-auto gap-10">
         <div className="border-2 rounded-lg bg-[#fff1d6bb] dark:bg-[#1f155751]	border-black dark:border-[#027de1bd]">
           <div className="m-4 max-sm:hidden">
-            <h2 className="font-bold text-4xl text-black dark:text-white pt-4">
+            <h2 className="drop-shadow-md font-bold text-4xl text-black dark:text-white pt-4">
               Upload .CUE file
             </h2>
-            <p className="text-md text-neutral-600 dark:text-[#ADADAD] pt-4 pb-">
+            <p className="drop-shadow text-md text-neutral-600 dark:text-[#d4dce8] pt-4 pb-">
               Original data displayed below:
             </p>
             <div className=" text-center w-full h-80 mt-6 mb-6 bg-gray-200 border-dashed hover:border-solid border-4 border-[#a5a4a4] rounded-lg hover:border-indigo-700">
@@ -60,7 +88,7 @@ export default function Results() {
                     Drag and drop or click upload
                   </p>
                   <p className=" mt-3 text-1xl  text-gray-400 font-normal">
-                    to upload your .csv file from Rekordbox
+                    to upload your .csv file from rekordbox
                   </p>
                 </label>
               </form>
@@ -91,13 +119,13 @@ export default function Results() {
 
         <div className="border-2 rounded-lg bg-[#fff1d6bb] dark:bg-[#1f155751]	border-black dark:border-[#027de1bd] ">
           <div className="m-4">
-            <h2 className="font-bold text-4xl text-black dark:text-white pt-4">
+            <h2 className="drop-shadow-md font-bold text-4xl text-black dark:text-white pt-4">
               Copy to Clipboard
             </h2>
-            <p className=" text-md text-neutral-600 dark:text-[#ADADAD] pt-4 pb-">
+            <p className=" drop-shadow text-md text-neutral-600 dark:text-[#d4dce8] pt-4 pb-">
               Use online for Soundcloud etc.
             </p>
-            <div className="w-full h-80 mt-6 mb-6 border-4 border-[#a5a4a4a3]  bg-gray-100  text-gray-900 rounded-lg hover:border-indigo-700">
+            <div className="w-full max-sm:h-56 h-80 mt-6 mb-6 border-4 border-[#a5a4a4a3]  bg-gray-100  text-gray-900 rounded-lg hover:border-indigo-700">
               <p id=""></p>
               <p className="m-4 truncate overflow-scroll text-clip tracking-tight	leading-tight	"></p>
             </div>
