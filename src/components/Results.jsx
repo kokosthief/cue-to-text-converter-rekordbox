@@ -1,4 +1,4 @@
-import Papa from "papaparse";
+import Papa, { parse } from "papaparse";
 import { useState } from "react";
 
 export default function Results() {
@@ -10,28 +10,22 @@ export default function Results() {
       header: false,
       skipEmptyLines: true,
       complete: function (results) {
-        setParsedData(results.data);
+        setParsedData(results.data.splice(5));
       },
     });
   };
 
-  // (OLD) 2. splice 5 lines & push rest to modifiedData []
-  // const modifiedData = [];
-  // const modifyParsedData = (data) => {
-  //   modifiedData.push(data.splice(5));
-  // };
-  // modifyParsedData(parsedData);
-
-  // 2. splice 5 lines & push rest to modifiedData {}
-  const modifiedData = [];
-  const modifyParsedData = (data) => {
-    modifiedData.push(data.splice(5));
+  // loop over the data and create an object with the track title, performer and time
+  const modifyData = (data) => {
+    let result = new Object();
+    for (let i = 1; i < data.length; i += 5) {
+      result.time = data[i + 3];
+      result.song = data[i + 0];
+      result.artist = data[i + 1];
+    }
+    console.log(result);
   };
-  modifyParsedData(parsedData);
-
-  console.log(modifiedData);
-
-  // 3. in modifiedData remove everything outside of quotation marks
+  modifyData(parsedData);
 
   return (
     <div className="flex-auto">

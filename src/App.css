@@ -1,0 +1,7 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-width: 390px;
+  background: linear-gradient(to right, rgb(100, 116, 139), rgb(254, 249, 195));
+}
