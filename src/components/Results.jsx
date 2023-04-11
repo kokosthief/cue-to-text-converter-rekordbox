@@ -36,7 +36,10 @@ export default function Results() {
     for (const key in data) {
       sanitizedData[key] = {};
       for (const innerKey in data[key]) {
-        if (data !== undefined) {
+        if (
+          data[key][innerKey] !== undefined &&
+          Array.isArray(data[key][innerKey])
+        ) {
           sanitizedData[key][innerKey] = data[key][innerKey].map(
             (str) =>
               str
@@ -60,15 +63,15 @@ export default function Results() {
       <div className="pt-10 max-sm:pt-0 pb-8 px-5 grid grid-cols-1 md:grid-cols-2 max-w-6xl mx-auto gap-10">
         <div className="border-2 rounded-lg bg-[#fff1d6bb] dark:bg-[#1f155751]	border-black dark:border-[#027de1bd]">
           <div className="m-4 max-sm:hidden">
-            <h2 className="drop-shadow-md font-bold text-4xl text-black dark:text-white pt-4">
+            <h2 className="font-bold text-4xl text-black dark:text-white pt-4">
               Upload .CUE file
             </h2>
-            <p className="drop-shadow text-md text-neutral-600 dark:text-[#d4dce8] pt-4 pb-">
+            <p className="text-md text-neutral-600 dark:text-[#e8e8e8] pt-4 pb-">
               Original data displayed below:
             </p>
-            <div className=" text-center w-full h-80 mt-6 mb-6 bg-gray-200 border-dashed hover:border-solid border-4 border-[#a5a4a4] rounded-lg hover:border-indigo-700">
-              <form>
-                <label className=" cursor-pointer">
+            <div className="grid h-80 place-items-center transition ease-in-out delay-80 text-center w-full my-6 bg-gray-200 border-dashed hover:border-solid border-4 border-[#a5a4a4] rounded-lg hover:border-indigo-700">
+              <form className="">
+                <label className="cursor-pointer">
                   <input
                     type="file"
                     name="file"
@@ -77,7 +80,7 @@ export default function Results() {
                     onChange={changeHandler}
                   />
                   <svg
-                    className="mt-3 mx-auto w-2/5 h-2/5"
+                    className="mx-auto w-2/6 h-2/6"
                     fill="rgb(156 163 175"
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
@@ -88,7 +91,7 @@ export default function Results() {
                     Drag and drop or click upload
                   </p>
                   <p className=" mt-3 text-1xl  text-gray-400 font-normal">
-                    to upload your .csv file from rekordbox
+                    to upload your .cue files from rekordbox
                   </p>
                 </label>
               </form>
@@ -96,7 +99,7 @@ export default function Results() {
           </div>
 
           <div className="">
-            <label className="h-16 flex justify-center  rounded-b-md items-center cursor-pointer text-2xl bg-[#027DE1] hover:bg-[#027de1bc] text-white rounded-none shadow-2xl font-bold">
+            <label className="transition ease-in-out delay-80 h-16 flex justify-center rounded-b-md items-center cursor-pointer text-2xl  bg-[#027DE1]  hover:bg-[#027de1bc] text-white rounded-none shadow-2xl font-bold">
               Upload
               <svg
                 className="mx-4 w-8 h-8"
@@ -117,22 +120,22 @@ export default function Results() {
           </div>
         </div>
 
-        <div className="border-2 rounded-lg bg-[#fff1d6bb] dark:bg-[#1f155751]	border-black dark:border-[#027de1bd] ">
+        <div className="delay-80 border-2 rounded-lg bg-[#fff1d6bb] dark:bg-[#1f155751]	border-black dark:border-[#027de1bd] ">
           <div className="m-4">
-            <h2 className="drop-shadow-md font-bold text-4xl text-black dark:text-white pt-4">
+            <h2 className="font-bold text-4xl text-black dark:text-white pt-4">
               Copy to Clipboard
             </h2>
-            <p className=" drop-shadow text-md text-neutral-600 dark:text-[#d4dce8] pt-4 pb-">
+            <p className=" text-md text-neutral-600 dark:text-[#e8e8e8] pt-4 pb-">
               Use online for Soundcloud etc.
             </p>
-            <div className="w-full max-sm:h-56 h-80 mt-6 mb-6 border-4 border-[#a5a4a4a3]  bg-gray-100  text-gray-900 rounded-lg hover:border-indigo-700">
+            <div className="transition ease-in-out delay-80 w-full max-sm:h-56 h-80 mt-6 mb-6 border-4 border-[#a5a4a4a3]  bg-gray-100  text-gray-900 rounded-lg hover:border-indigo-700">
               <p id=""></p>
               <p className="m-4 truncate overflow-scroll text-clip tracking-tight	leading-tight	"></p>
             </div>
           </div>
 
           <div className="">
-            <button className=" w-full h-16 rounded-b-md flex flex-row justify-center cursor-pointer text-2xl bg-[#027DE1] hover:bg-[#027de1bc] text-white rounded-none shadow-2xl font-bold ">
+            <button className="transition ease-in-out delay-80 w-full h-16 rounded-b-md flex flex-row justify-center cursor-pointer text-2xl bg-[#027DE1] hover:bg-[#027de1bc] text-white rounded-none shadow-2xl font-bold ">
               Copy to Clipboard
               <svg
                 className="mx-4 w-8 h-8"
