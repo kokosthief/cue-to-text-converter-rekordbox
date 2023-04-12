@@ -44,7 +44,7 @@ export default function Navbar() {
           </p>
         </div>
       </div>
-      <div className="flex cursor-pointer right-5 ">
+      <div className="flex cursor-pointer right- select-none ">
         <svg // light/darkmode toggle
           width="20px"
           height="20px"
