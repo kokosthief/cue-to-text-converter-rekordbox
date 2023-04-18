@@ -1,6 +1,6 @@
-# Convert-Rekordbox-Cue-File-to-Setlist
+# Cue to Text converter for rekordbox
 
-## Web app to convert CUE files to a readable text setlist users can copy for their set uploads.
+## Web app for DJs to compile a setlist from the .cue file rekordbox produces when recording a live set.
 
 ![User Interface Screenshot](src/assets/UI-Screenshot.jpg)
 
