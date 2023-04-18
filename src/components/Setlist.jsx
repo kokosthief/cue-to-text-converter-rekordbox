@@ -1,7 +1,7 @@
 import Papa, { parse } from "papaparse";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
-export default function Results() {
+export default function Setlist() {
   const [parsedData, setParsedData] = useState([]);
 
   const changeHandler = (event) => {
@@ -9,8 +9,8 @@ export default function Results() {
     Papa.parse(event.target.files[0], {
       header: false,
       skipEmptyLines: true,
-      complete: function (results) {
-        setParsedData(results.data);
+      complete: function (cueFile) {
+        setParsedData(cueFile.data);
       },
     });
   };
@@ -28,6 +28,7 @@ export default function Results() {
         };
       }
     }
+    // console.log(result);
     return result;
   };
 
@@ -53,15 +54,42 @@ export default function Results() {
         }
       }
     }
-    console.log(sanitizedData);
+    // console.log(sanitizedData);
     return sanitizedData;
   };
 
-  sanitizeData(modifyData(parsedData));
+  const renameKeys = (data) => {
+    let renamedData = data;
+    Object.keys(renamedData).forEach((key, index) => {
+      const newKey = `Track ${index + 1}`;
+      renamedData[newKey] = renamedData[key];
+      delete renamedData[key];
+    });
+    // console.log(renamedData);
+    return renamedData;
+  };
+
+  const setlistRef = useRef(null);
+  const renderSetlist = (data) => {
+    if (setlistRef.current != null) {
+      let setlistData = "";
+
+      for (let track in data) {
+        setlistData += `<li>
+            ${data[track].time} ${data[track].title} - ${data[track].artist}
+          </li>`;
+      }
+      console.log(data);
+      setlistRef.current.innerHTML = setlistData;
+    }
+  };
+
+  renderSetlist(renameKeys(sanitizeData(modifyData(parsedData))));
+
   return (
     <div className="flex-auto">
       <div className="pt-10 max-sm:pt-0 pb-8 px-5 grid grid-cols-1 md:grid-cols-2 max-w-6xl mx-auto gap-10">
-        <div className="border-2 rounded-lg bg-[#fff1d6bb] dark:bg-[#1f155751]	border-black dark:border-[#027de1bd]">
+        <div className="select-none border-2 rounded-lg bg-[#fff1d6bb] dark:bg-[#1f155751]	border-black dark:border-[#027de1bd]">
           <div className="m-4 max-sm:hidden">
             <h2 className="font-bold text-4xl text-black dark:text-white pt-4">
               Upload .CUE file
@@ -99,7 +127,7 @@ export default function Results() {
           </div>
 
           <div className="">
-            <label className="transition ease-in-out delay-80 h-16 flex justify-center rounded-b-md items-center cursor-pointer text-2xl  bg-[#027DE1]  hover:bg-[#027de1bc] text-white rounded-none shadow-2xl font-bold">
+            <label className="transition ease-in-out delay-90 h-16 flex justify-center rounded-b-md items-center cursor-pointer text-2xl  bg-[#027DE1]  hover:bg-[#027de1bc] text-white rounded-none shadow-2xl font-bold">
               Upload
               <svg
                 className="mx-4 w-8 h-8"
@@ -122,20 +150,19 @@ export default function Results() {
 
         <div className="delay-80 border-2 rounded-lg bg-[#fff1d6bb] dark:bg-[#1f155751]	border-black dark:border-[#027de1bd] ">
           <div className="m-4">
-            <h2 className="font-bold text-4xl text-black dark:text-white pt-4">
+            <h2 className="select-none font-bold text-4xl text-black dark:text-white pt-4">
               Copy to Clipboard
             </h2>
-            <p className=" text-md text-neutral-600 dark:text-[#e8e8e8] pt-4 pb-">
+            <p className="select-none text-md text-neutral-600 dark:text-[#e8e8e8] pt-4 pb-">
               Use online for Soundcloud etc.
             </p>
-            <div className="transition ease-in-out delay-80 w-full max-sm:h-56 h-80 mt-6 mb-6 border-4 border-[#a5a4a4a3]  bg-gray-100  text-gray-900 rounded-lg hover:border-indigo-700">
-              <p id=""></p>
-              <p className="m-4 truncate overflow-scroll text-clip tracking-tight	leading-tight	"></p>
+            <div className="pl-4 pt-4 truncate overflow-scroll text-clip tracking-tight	leading-tight	 selection:bg-pink-300 overscroll-contain w-full max-sm:h-56 h-80 mt-6 mb-6 border-4 border-[#a5a4a4a3]  bg-gray-100  text-gray-900 rounded-lg hover:border-indigo-700">
+              <ul ref={setlistRef} id="setlistEl"></ul>
             </div>
           </div>
 
           <div className="">
-            <button className="transition ease-in-out delay-80 w-full h-16 rounded-b-md flex flex-row justify-center cursor-pointer text-2xl bg-[#027DE1] hover:bg-[#027de1bc] text-white rounded-none shadow-2xl font-bold ">
+            <label className="select-none transition ease-in-out delay-90 h-16 flex justify-center rounded-b-md items-center cursor-pointer text-2xl  bg-[#027DE1]  hover:bg-[#027de1bc] text-white rounded-none shadow-2xl font-bold">
               Copy to Clipboard
               <svg
                 className="mx-4 w-8 h-8"
@@ -147,7 +174,7 @@ export default function Results() {
                 <path d="M15.9843 18.9999H12.8813C12.0375 19 11.2176 19.0001 10.539 18.9089C9.77323 18.8059 8.89833 18.5551 8.17159 17.8283C7.44485 17.1016 7.19402 16.2267 7.09107 15.461C6.99983 14.7823 6.99992 13.9624 7.00001 13.1187L7.00001 6.88116C6.99997 6.58272 6.99994 6.28727 7.00395 5.99999C6.2364 5.99955 5.46424 5.97511 4.70072 6.06939C4.09998 6.14358 3.51831 6.30999 3.02408 6.7426C2.92414 6.83008 2.83012 6.9241 2.74264 7.02404C2.31003 7.51827 2.14362 8.09994 2.06943 8.70069C1.99993 9.26352 1.99996 9.96136 2 10.771L2 17.0658C1.99995 17.9523 1.99991 18.7161 2.08215 19.3278C2.17028 19.9833 2.36902 20.6116 2.87868 21.1213C3.38835 21.631 4.0167 21.8297 4.67221 21.9178C5.28387 22.0001 6.04769 22 6.93417 22L11.9039 22C12.4011 22 12.8301 22 13.184 21.9727C13.5572 21.9439 13.9292 21.8804 14.2905 21.7082C14.9117 21.4122 15.4122 20.9117 15.7082 20.2905C15.9005 19.887 15.9622 19.442 15.9843 18.9999Z"></path>
                 <path d="M15.9843 18.9999H12.8813C12.0375 19 11.2176 19.0001 10.539 18.9089C9.77323 18.8059 8.89833 18.5551 8.17159 17.8283C7.44485 17.1016 7.19402 16.2267 7.09107 15.461C6.99983 14.7823 6.99992 13.9624 7.00001 13.1187L7.00001 6.88116C6.99997 6.58272 6.99994 6.28727 7.00395 5.99999C6.2364 5.99955 5.46424 5.97511 4.70072 6.06939C4.09998 6.14358 3.51831 6.30999 3.02408 6.7426C2.92414 6.83008 2.83012 6.9241 2.74264 7.02404C2.31003 7.51827 2.14362 8.09994 2.06943 8.70069C1.99993 9.26352 1.99996 9.96136 2 10.771L2 17.0658C1.99995 17.9523 1.99991 18.7161 2.08215 19.3278C2.17028 19.9833 2.36902 20.6116 2.87868 21.1213C3.38835 21.631 4.0167 21.8297 4.67221 21.9178C5.28387 22.0001 6.04769 22 6.93417 22L11.9039 22C12.4011 22 12.8301 22 13.184 21.9727C13.5572 21.9439 13.9292 21.8804 14.2905 21.7082C14.9117 21.4122 15.4122 20.9117 15.7082 20.2905C15.9005 19.887 15.9622 19.442 15.9843 18.9999Z"></path>
               </svg>
-            </button>
+            </label>
           </div>
         </div>
       </div>

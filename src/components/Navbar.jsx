@@ -22,10 +22,10 @@ export default function Navbar() {
   };
 
   return (
-    <div className="bg-black flex  justify-around items-center max-sm:py-1.5 py-4 max-sm:px-6">
+    <div className="select-none bg-black flex justify-around items-center max-sm:py-1.5 py-4 max-sm:px-6">
       <div className="flex flex-wrap max-sm:px-12">
-        <div className="my-auto m-auto ">
-          <svg //rekordbox logo
+        <div className="my-auto m-auto">
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             width="180"
             height="26"
@@ -38,13 +38,13 @@ export default function Navbar() {
           </svg>
         </div>
         <div className="my-2 text-center">
-          <p className="text-neutral-50 text-sm md:ml-10 max-sm:m-auto">
-            Web app for DJs to compile a setlist from the .cue file Rekordbox
+          <p className="text-neutral-50 text-sm md:ml-10 max-sm:m-auto ">
+            Web app for DJs to compile a setlist from the .cue file rekordbox
             produces when recording a live set.
           </p>
         </div>
       </div>
-      <div className="flex cursor-pointer right- select-none ">
+      <div className="flex cursor-pointer mr-2	hover:animate-pulse">
         <svg // light/darkmode toggle
           width="20px"
           height="20px"
@@ -55,9 +55,10 @@ export default function Navbar() {
         >
           <path
             fill="#ffffff"
-            fill-rule="evenodd"
+            stroke="#ffffff"
+            fillRule="evenodd"
             d="M8 0a8 8 0 100 16A8 8 0 008 0zm0 1.5v13a6.5 6.5 0 100-13z"
-            clip-rule="evenodd"
+            // clip-rule="evenodd"
           />
         </svg>
       </div>
