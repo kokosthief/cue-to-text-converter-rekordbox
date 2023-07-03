@@ -8,7 +8,7 @@ export default function Footer() {
           href="https://soundcloud.com/henners-ecstatic-dance"
           target="_blank"
         >
-          DJ Henners
+          Henners
         </a>
       </p>
     </div>
