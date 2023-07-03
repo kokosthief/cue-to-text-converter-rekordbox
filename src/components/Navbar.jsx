@@ -39,8 +39,8 @@ export default function Navbar() {
         </div>
         <div className="my-2 text-center">
           <p className="text-neutral-50 text-sm md:ml-10 max-sm:m-auto ">
-            Web app for DJs to compile a setlist from the .cue file rekordbox
-            produces when recording a live set.
+            Web app for DJs to convert Rekordbox .CUE files into tracklists and
+            setlists.
           </p>
         </div>
       </div>

@@ -1,11 +1,12 @@
-import Papa, { parse } from "papaparse";
-import { useRef, useState } from "react";
+import Papa from "papaparse";
+import { useRef, useState, useEffect } from "react";
+import SVGComponent from "./SVGComponent";
 
 export default function Setlist() {
   const [parsedData, setParsedData] = useState([]);
+  const [isCopied, setIsCopied] = useState(false);
 
   const changeHandler = (event) => {
-    // 1. parse CUE into useState parsedData
     Papa.parse(event.target.files[0], {
       header: false,
       skipEmptyLines: true,
@@ -17,7 +18,6 @@ export default function Setlist() {
 
   const modifyData = (data) => {
     const splicedArr = data.splice(5);
-
     const result = {};
     for (let i = 0; i < splicedArr.length; i += 5) {
       if (!result[i]) {
@@ -28,7 +28,6 @@ export default function Setlist() {
         };
       }
     }
-    // console.log(result);
     return result;
   };
 
@@ -54,7 +53,6 @@ export default function Setlist() {
         }
       }
     }
-    // console.log(sanitizedData);
     return sanitizedData;
   };
 
@@ -65,26 +63,35 @@ export default function Setlist() {
       renamedData[newKey] = renamedData[key];
       delete renamedData[key];
     });
-    // console.log(renamedData);
     return renamedData;
   };
 
   const setlistRef = useRef(null);
-  const renderSetlist = (data) => {
-    if (setlistRef.current != null) {
-      let setlistData = "";
 
-      for (let track in data) {
-        setlistData += `<li>
-            ${data[track].time} ${data[track].title} - ${data[track].artist}
-          </li>`;
+  useEffect(() => {
+    const renderSetlist = (data) => {
+      if (setlistRef.current != null) {
+        let setlistData = "";
+        for (let track in data) {
+          const { time, title, artist } = data[track];
+          setlistData += `<li>${time} : ${title} - ${artist}</li>`;
+        }
+        setlistRef.current.innerHTML = setlistData;
       }
-      console.log(data);
-      setlistRef.current.innerHTML = setlistData;
-    }
-  };
+    };
 
-  renderSetlist(renameKeys(sanitizeData(modifyData(parsedData))));
+    renderSetlist(renameKeys(sanitizeData(modifyData(parsedData))));
+  }, [parsedData]);
+
+  const handleCopyToClipboard = () => {
+    const setlistText = setlistRef.current.innerText;
+    navigator.clipboard.writeText(setlistText).then(() => {
+      setIsCopied(true);
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 2000);
+    });
+  };
 
   return (
     <div className="flex-auto">
@@ -95,7 +102,7 @@ export default function Setlist() {
               Upload .CUE file
             </h2>
             <p className="text-md text-neutral-600 dark:text-[#e8e8e8] pt-4 pb-">
-              Original data displayed below:
+              Upload original data below:
             </p>
             <div className="grid h-80 place-items-center transition ease-in-out delay-80 text-center w-full my-6 bg-gray-200 border-dashed hover:border-solid border-4 border-[#a5a4a4] rounded-lg hover:border-indigo-700">
               <form className="">
@@ -107,14 +114,7 @@ export default function Setlist() {
                     className="hidden"
                     onChange={changeHandler}
                   />
-                  <svg
-                    className="mx-auto w-2/6 h-2/6"
-                    fill="rgb(156 163 175"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
-                  </svg>
+                  <SVGComponent />
                   <p className=" text-3xl  text-gray-600 font-extrabold ">
                     Drag and drop or click upload
                   </p>
@@ -156,14 +156,19 @@ export default function Setlist() {
             <p className="select-none text-md text-neutral-600 dark:text-[#e8e8e8] pt-4 pb-">
               Use online for Soundcloud etc.
             </p>
-            <div className="pl-4 pt-4 truncate overflow-scroll text-clip tracking-tight	leading-tight	 selection:bg-pink-300 overscroll-contain w-full max-sm:h-56 h-80 mt-6 mb-6 border-4 border-[#a5a4a4a3]  bg-gray-100  text-gray-900 rounded-lg hover:border-indigo-700">
+            <div className="pl-4 pt-4 max-h-[20rem] h-[20rem] overflow-y-auto mt-6 mb-6 border-4 border-[#a5a4a4a3] bg-gray-100 text-gray-900 rounded-lg hover:border-indigo-700">
               <ul ref={setlistRef} id="setlistEl"></ul>
             </div>
           </div>
 
           <div className="">
-            <label className="select-none transition ease-in-out delay-90 h-16 flex justify-center rounded-b-md items-center cursor-pointer text-2xl  bg-[#027DE1]  hover:bg-[#027de1bc] text-white rounded-none shadow-2xl font-bold">
-              Copy to Clipboard
+            <label
+              className={`transition ease-in-out delay-90 h-16 flex justify-center rounded-b-md items-center cursor-pointer text-2xl bg-[#027DE1] hover:bg-[#027de1bc] text-white rounded-none shadow-2xl font-bold ${
+                isCopied ? "bg-green-500" : ""
+              }`}
+              onClick={handleCopyToClipboard}
+            >
+              {isCopied ? "Copied to Clipboard!" : "Copy to Clipboard"}
               <svg
                 className="mx-4 w-8 h-8"
                 xmlns="http://www.w3.org/2000/svg"
