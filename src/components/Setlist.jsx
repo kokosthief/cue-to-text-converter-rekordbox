@@ -74,7 +74,7 @@ export default function Setlist() {
         let setlistData = "";
         for (let track in data) {
           const { time, title, artist } = data[track];
-          setlistData += `<li>${time} : ${title} - ${artist}</li>`;
+          setlistData += `<li>${time} ${title} - ${artist}</li>`;
         }
         setlistRef.current.innerHTML = setlistData;
       }
