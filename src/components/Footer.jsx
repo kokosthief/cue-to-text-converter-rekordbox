@@ -5,7 +5,7 @@ export default function Footer() {
         Created by{" "}
         <a
           className=" underline"
-          href="https://soundcloud.com/henners-ecstatic-dance"
+          href="https://soundcloud.com/dj_henners"
           target="_blank"
         >
           Henners
